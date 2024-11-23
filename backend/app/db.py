@@ -16,7 +16,8 @@ Base = declarative_base()
 
 # Función para inicializar la base de datos, creando las tablas
 def init_db():
-    import app.models.user  # Realiza la importación dentro de la función para evitar circular imports
+    # Importa todos los modelos para registrar sus metadatos en SQLAlchemy
+    from app.models import user, company, business_unit, item, component
     Base.metadata.create_all(bind=engine, checkfirst=True)
 
 # Función para obtener una sesión de la base de datos

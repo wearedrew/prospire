@@ -1,13 +1,16 @@
-# app/models/company.py
-from sqlalchemy import Column, Integer, String
+import uuid
+from sqlalchemy import Column, String
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-from app.db import Base  # Asegúrate de que esto esté bien importado
+from app.db import Base
 
 class Company(Base):
-    __tablename__ = "companies"  # Nombre de la tabla en la base de datos
+    __tablename__ = "companies"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
+    # Definición de columnas
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    name = Column(String, index=True, nullable=False)
 
-    # Relación con la tabla User (si corresponde)
-    users = relationship("User", back_populates="company")
+    # Relaciones
+    business_units = relationship("BusinessUnit", back_populates="company", cascade="all, delete-orphan")
+    prediction_parameters = relationship("PredictionParameters", back_populates="company")
